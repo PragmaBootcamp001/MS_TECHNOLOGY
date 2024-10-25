@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: API de Tecnologías
+  description: API para gestionar tecnologías del sistema
+  version: 1.0.0
+paths:
+  /technologies:
+    post:
+      summary: Crear una nueva tecnología
+      operationId: createTechnology
+      requestBody:
+        description: Datos de la tecnología
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TechnologyPost'
+      responses:
+        '201':
+          description: Tecnología creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TechnologyPost'
+        '400':
+          description: Error en la solicitud
+        '401':
+          description: No autorizado
+    get:
+      summary: Listar todas las tecnologías
+      operationId: listTechnologies
+      responses:
+        '200':
+          description: Lista de tecnologías
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TechnologyGet'
+
+components:
+  schemas:
+    TechnologyPost:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    TechnologyGet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
