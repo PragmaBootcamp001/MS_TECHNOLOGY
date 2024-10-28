@@ -8,17 +8,17 @@ spring:
   devtools:
     add-properties: false
   r2dbc:
-    url: "${JDBC_URL}"
-    username: "${USERNAME}"
-    password: "${PASSWORD}"
+    url: ${JDBC_URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
   profiles:
     include: null
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: "${JWT_ADMIN_ROLES}"
-          client-id: "${JWT_CLIENT_ID}"
+          issuer-uri: ${JWT_ADMIN_ROLES}
+          client-id: ${JWT_CLIENT_ID}
 jwt:
   json-exp-roles: "/roles"
 management:
