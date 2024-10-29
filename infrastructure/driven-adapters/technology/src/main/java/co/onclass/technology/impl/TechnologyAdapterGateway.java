@@ -5,16 +5,12 @@ import co.onclass.model.technology.gateways.TechnologyRepositoryGateway;
 import co.onclass.technology.entity.TechnologyEntity;
 import co.onclass.technology.repository.TechnologyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -54,7 +50,7 @@ public class TechnologyAdapterGateway implements TechnologyRepositoryGateway {
                                 .name(entity.getName())
                                 .description(entity.getDescription())
                                 .build())
-                        .collect(Collectors.toList()));
+                        .toList());
     }
 
     @Override
