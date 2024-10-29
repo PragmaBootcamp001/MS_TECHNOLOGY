@@ -6,9 +6,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.support.WebExchangeBindException;
@@ -56,5 +58,22 @@ public class TechnologyApiRest {
                 response.put("errors", List.of(t.getMessage()));
                 return Mono.just(ResponseEntity.badRequest().body(response));
             });
+    }
+
+    @GetMapping
+    public Mono<ResponseEntity<Map<String, Object>>> listTechnologies(
+            @RequestParam(name="page", defaultValue = "0") int page,
+            @RequestParam(name="size", defaultValue = "10") int size,
+            @RequestParam(name="isAscending", defaultValue = "true") boolean isAscending) {
+
+        return technologyUseCase.list(page, size, isAscending)
+                .map(technologies -> {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("technologies", technologies);
+                    response.put("page", page);
+                    response.put("size", size);
+                    response.put("isAscending", isAscending);
+                    return ResponseEntity.ok(response);
+                });
     }
 }

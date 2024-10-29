@@ -1,6 +1,8 @@
 package co.onclass.technology.repository;
 
 import co.onclass.technology.entity.TechnologyEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
