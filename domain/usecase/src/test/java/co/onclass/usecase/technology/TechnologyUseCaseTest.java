@@ -11,7 +11,13 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -66,4 +72,37 @@ class TechnologyUseCaseTest {
         verify(technologyRepositoryGateway).existsByName(technology.getName());
         verify(technologyRepositoryGateway, never()).create(any(Technology.class));
     }
+
+    @Test
+    void listTechnologies_success() {
+        List<Technology> technologies = Arrays.asList(
+                Technology.builder().name("Java").description("Lenguaje de programación").build(),
+                Technology.builder().name("Python").description("Lenguaje de programación").build()
+        );
+        when(technologyRepositoryGateway.list(anyInt(), anyInt(), anyBoolean()))
+                .thenReturn(Mono.just(technologies));
+
+        Mono<List<Technology>> result = technologyUseCase.list(0, 2, true);
+
+        StepVerifier.create(result)
+                .expectNext(technologies)
+                .verifyComplete();
+
+        verify(technologyRepositoryGateway).list(0, 2, true);
+    }
+
+    @Test
+    void listTechnologies_empty() {
+        when(technologyRepositoryGateway.list(anyInt(), anyInt(), anyBoolean()))
+                .thenReturn(Mono.just(Collections.emptyList()));
+
+        Mono<List<Technology>> result = technologyUseCase.list(0, 2, true);
+
+        StepVerifier.create(result)
+                .expectNext(Collections.emptyList())
+                .verifyComplete();
+
+        verify(technologyRepositoryGateway).list(0, 2, true);
+    }
+
 }

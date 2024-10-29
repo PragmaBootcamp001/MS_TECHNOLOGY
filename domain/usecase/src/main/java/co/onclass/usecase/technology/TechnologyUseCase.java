@@ -6,6 +6,8 @@ import co.onclass.model.technology.gateways.TechnologyRepositoryGateway;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class TechnologyUseCase {
     private final TechnologyRepositoryGateway technologyRepositoryGateway;
@@ -18,5 +20,10 @@ public class TechnologyUseCase {
                     }
                     return technologyRepositoryGateway.create(technology);
                 });
+    }
+
+    public Mono<List<Technology>> list(int page, int size, boolean isAscending) {
+        int offset = page * size;
+        return technologyRepositoryGateway.list(offset, size, isAscending);
     }
 }
