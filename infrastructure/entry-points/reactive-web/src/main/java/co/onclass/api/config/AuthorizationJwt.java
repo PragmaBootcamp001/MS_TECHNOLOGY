@@ -83,7 +83,7 @@ public class AuthorizationJwt implements WebFluxConfigurer {
     public Converter<Jwt, Mono<AbstractAuthenticationToken>> grantedAuthoritiesExtractor() {
         var jwtConverter = new JwtAuthenticationConverter();
         jwtConverter.setJwtGrantedAuthoritiesConverter(jwt ->
-                getRoles(jwt.getClaims(), jsonExpRoles)
+                getRoles(jwt.getClaims())
                 .stream()
                 .map(ROLE::concat)
                 .map(SimpleGrantedAuthority::new)
@@ -91,7 +91,7 @@ public class AuthorizationJwt implements WebFluxConfigurer {
         return new ReactiveJwtAuthenticationConverterAdapter(jwtConverter);
     }
 
-    private List<String> getRoles(Map<String, Object> claims, String jsonExpClaim) {
+    private List<String> getRoles(Map<String, Object> claims) {
         List<String> roles = List.of();
         try {
             var realmAccess = (Map<String, Object>) claims.get("realm_access");
